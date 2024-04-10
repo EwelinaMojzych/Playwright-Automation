@@ -13,7 +13,7 @@ test('Browser Context First Playwright test', async ({browser})=>
     await page.locator('[name="last_name"]').fill('Mojzych');
     await page.locator('[name="email"]').fill('ewelina.mojzych@itmagination.com');
     await page.locator('[name="message"]').fill('no comment');
-    await page.locator('[name="message"]').fill('no comment');
+    
 
 });
 
