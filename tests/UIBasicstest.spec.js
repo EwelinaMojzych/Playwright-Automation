@@ -102,3 +102,28 @@ test('Selecting dropdowns', async ({page}) => {
     await dropdown3.selectOption("jquery");
     await expect(dropdown3).toHaveValue('jquery');
 });
+
+
+test('Selecting checkboxes', async ({page}) => {
+    await page.goto("https://webdriveruniversity.com/Dropdown-Checkboxes-RadioButtons/index.html");
+    const checkbox1 = page.locator('[value="option-1"]');
+    await (checkbox1).check();
+    await expect(checkbox1).toBeChecked();
+
+    const checkbox2 = page.locator('[value="option-2"]');
+    await (checkbox2).check();
+    await expect(checkbox2).toBeChecked();
+
+    const checkbox3 = page.locator('[value="option-3"]');
+    await (checkbox3).check();
+    await expect(checkbox3).toBeChecked();
+
+    const checkbox4 = page.locator('[value="option-4"]');
+    await (checkbox4).check();
+    await expect(checkbox4).toBeChecked();
+
+    await (checkbox2).uncheck();
+    await expect(checkbox2).not.toBeChecked();
+    await (checkbox4).uncheck();
+    await expect(checkbox4).not.toBeChecked();
+}); 
