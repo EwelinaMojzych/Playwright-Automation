@@ -127,3 +127,31 @@ test('Selecting checkboxes', async ({page}) => {
     await (checkbox4).uncheck();
     await expect(checkbox4).not.toBeChecked();
 }); 
+
+
+test('Selecting radiobuttons', async ({page}) => {
+    await page.goto("https://webdriveruniversity.com/Dropdown-Checkboxes-RadioButtons/index.html");
+    const radiobutton1 = page.locator('#radio-buttons input[value="green"]');
+    await (radiobutton1).check();
+    await expect(radiobutton1).toBeChecked();
+
+    const radiobutton2 = page.locator('#radio-buttons input[value="blue"]');
+    await (radiobutton2).check();
+    await expect(radiobutton2).toBeChecked();
+
+    const radiobutton3 = page.locator('#radio-buttons input[value="yellow"]');
+    await (radiobutton3).check();
+    await expect(radiobutton3).toBeChecked();
+
+    const radiobutton4 = page.locator('#radio-buttons input[value="orange"]');
+    await (radiobutton4).check();
+    await expect(radiobutton4).toBeChecked();
+
+    const radiobutton5 = page.locator('#radio-buttons input[value="purple"]');
+    await (radiobutton5).check();
+    await expect(radiobutton5).toBeChecked();
+
+
+
+
+}); 
