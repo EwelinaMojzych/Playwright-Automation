@@ -1,5 +1,5 @@
 const {test, expect,} = require('@playwright/test');
-
+const {ContactUsForm} = require('./PageObjects/ContactUsForm');
 
 
 test('Browser Context First Playwright test', async ({browser})=>
@@ -7,6 +7,7 @@ test('Browser Context First Playwright test', async ({browser})=>
 
     const context = await browser.newContext();
     const page = await context.newPage();
+    const ContactUsForm = new ContactUsForm(page);
     await page.goto("https://webdriveruniversity.com/Contact-Us/contactus.html");
     await page.locator('[name="first_name"]').fill('Ewelina');
     await expect(page.locator('[name="first_name"]')).toHaveValue('Ewelina');
