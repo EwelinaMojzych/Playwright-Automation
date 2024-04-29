@@ -1,39 +1,54 @@
 const {test, expect,} = require('@playwright/test');
 const {ContactUsForm} = require('./PageObjects/ContactUsForm');
 
+const contactUsUrl = 'https://webdriveruniversity.com/Contact-Us/contactus.html'
 
-test('Browser Context First Playwright test', async ({browser})=>
+test('Filling the fields and data reset', async ({browser})=>
 {
-
     const context = await browser.newContext();
     const page = await context.newPage();
-    const ContactUsForm = new ContactUsForm(page);
-    await page.goto("https://webdriveruniversity.com/Contact-Us/contactus.html");
-    await page.locator('[name="first_name"]').fill('Ewelina');
-    await expect(page.locator('[name="first_name"]')).toHaveValue('Ewelina');
-    await page.locator('[name="last_name"]').fill('Mojzych');
-    await expect(page.locator('[name="last_name"]')).toHaveValue('Mojzych');
-    await page.locator('[name="email"]').fill('ewelina.mojzych@itmagination.com');
-    await expect(page.locator('[name="email"]')).toHaveValue('ewelina.mojzych@itmagination.com');
-    await page.locator('[name="message"]').fill('no comment');
-    await expect(page.locator('[name="message"]')).toHaveValue('no comment');
-    await page.locator('#form_buttons [type="reset"]').click()
-    await expect(page.locator('[name="first_name"]')).toHaveValue('');
-    await expect(page.locator('[name="last_name"]')).toHaveValue('');
-    await expect(page.locator('[name="email"]')).toHaveValue('');
-    await expect(page.locator('[name="message"]')).toHaveValue('');
+    const contactForm = new ContactUsForm(page);
 
+    const firstName = 'Ewelina';
+    const lastName = 'Mojzych';
+    const email = 'ewelina.mojzych@itmagination.com';
+    const comment = 'no comment';
+
+    await page.goto(contactUsUrl);
+
+    await contactForm.fillContactForm(firstName, lastName, email, comment);
+
+    await expect(contactForm.firstName).toHaveValue(firstName);
+    await expect(contactForm.lastName).toHaveValue(lastName);
+    await expect(contactForm.email).toHaveValue(email);
+    await expect(contactForm.comment).toHaveValue(comment);
+
+    await contactForm.resetButton.click();
+
+    await expect(contactForm.firstName).toHaveValue('');
+    await expect(contactForm.lastName).toHaveValue('');
+    await expect(contactForm.email).toHaveValue('');
+    await expect(contactForm.comment).toHaveValue('');
 });
 
-test('Partial data entry and error message', async ({page}) => {
-    await page.goto("https://webdriveruniversity.com/Contact-Us/contactus.html");
-    await page.locator('[name="first_name"]').fill('Ewelina');
-    await expect(page.locator('[name="first_name"]')).toHaveValue('Ewelina');
-    await page.locator('[name="last_name"]').fill('Mojzych');
-    await expect(page.locator('[name="last_name"]')).toHaveValue('Mojzych');
-    await page.locator('#form_buttons [type="submit"]').click()
-    await expect(page.locator('body')).toContainText('Error: all fields are required')
-    await expect(page.locator('body')).toContainText('Error: Invalid email address')
+test('Partial data entry and error message', async ({page}) => 
+{
+    const contactForm = new ContactUsForm(page);
+
+    const firstName = 'Joanna';
+    const lastName = 'Kowalska';
+
+    await page.goto(contactUsUrl);
+
+    await contactForm.fillContactForm(firstName, lastName, '','',);
+
+    await expect(contactForm.firstName).toHaveValue(firstName);
+    await expect(contactForm.lastName).toHaveValue(lastName);
+
+    await contactForm.submitButton.click();
+
+    await expect(page.locator('body')).toContainText('Error: all fields are required');
+    await expect(page.locator('body')).toContainText('Error: Invalid email address');
 });
 
 
