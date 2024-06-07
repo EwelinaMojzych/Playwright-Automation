@@ -9,7 +9,7 @@ constructor(page)
     this.submitButton = page.locator('#form_buttons [type="submit"]');
 }
 
-async fillingForm(firstName,lastName,email,comment)
+async fillContactForm(firstName,lastName,email,comment)
 {
     await this.firstName.fill(firstName);
     await this.lastName.fill(lastName);
