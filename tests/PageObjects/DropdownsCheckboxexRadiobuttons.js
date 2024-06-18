@@ -1,3 +1,5 @@
+const { expect } = require('@playwright/test');
+
 class DropdownsCheckboxesRadiobuttons {
     constructor(page) {
         this.page = page;
@@ -13,6 +15,9 @@ class DropdownsCheckboxesRadiobuttons {
      
         this.radioButtonLocator = value => page.locator(`#radio-buttons input[value="${value}"]`);
     }
+    async navigate() {
+        await this.page.goto('https://webdriveruniversity.com/Dropdown-Checkboxes-RadioButtons/index.html');
+      }
     
     async selectBackendLanguage(language) {
         await this.dropdown1.selectOption(language);
@@ -44,10 +49,24 @@ class DropdownsCheckboxesRadiobuttons {
         }
     }
 
+    async expectCheckboxesToBeChecked(values) {
+        for (const value of values) {
+            const checkbox = this.page.locator(`[value="${value}"]`);
+            await expect(checkbox).toBeChecked();
+        }
+    }
+
+    async expectCheckboxesNotToBeChecked(values) {
+    for (const value of values) {
+      const checkbox = this.page.locator(`[value="${value}"]`);
+      await expect(checkbox).not.toBeChecked();
+    }
+    }
     async checkRadioButton(value) {
         const radioButton = this.radioButtonLocator(value);
         await radioButton.check();
         return radioButton;
+    
     }
 }
 

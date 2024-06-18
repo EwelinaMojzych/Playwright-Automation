@@ -1,3 +1,5 @@
+const { expect } = require('@playwright/test');
+
 class DatePickerPage {
     constructor(page) {
       this.page = page;
@@ -35,6 +37,16 @@ class DatePickerPage {
       await this.selectYear(year);
       await this.selectMonth(monthIndex);
       await this.selectDay(day);
+    }
+
+    async expectSelectedDate(year, monthIndex, day) {
+      // Format monthIndex to 2 digits (e.g., 07 for July)
+      const formattedMonth = (monthIndex + 1).toString().padStart(2, '0');
+      const formattedDay = day.toString().padStart(2, '0');
+      const expectedDate = `${formattedMonth}-${formattedDay}-${year}`;
+  
+      // Verify the date selected in the input field
+      await expect(this.dateInput).toHaveValue(expectedDate);
     }
   }
   

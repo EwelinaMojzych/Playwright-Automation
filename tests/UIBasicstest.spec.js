@@ -162,26 +162,22 @@ test('Selecting dropdowns', async ({ page }) => {
 
 test('Selecting checkboxes', async ({ page }) => {
     const checkboxesPage = new DropdownsCheckboxesRadiobuttons(page);
-  
-    await page.goto("https://webdriveruniversity.com/Dropdown-Checkboxes-RadioButtons/index.html");
+
+    await checkboxesPage.navigate();
   
     // Check checkboxes
     await checkboxesPage.checkCheckboxes(['option-1', 'option-2', 'option-3', 'option-4']);
-    await expect(page.locator('[value="option-1"]')).toBeChecked();
-    await expect(page.locator('[value="option-2"]')).toBeChecked();
-    await expect(page.locator('[value="option-3"]')).toBeChecked();
-    await expect(page.locator('[value="option-4"]')).toBeChecked();
+    await checkboxesPage.expectCheckboxesToBeChecked(['option-1', 'option-2', 'option-3', 'option-4']);
   
     // Uncheck checkboxes
     await checkboxesPage.uncheckCheckboxes(['option-2', 'option-4']);
-    await expect(page.locator('[value="option-2"]')).not.toBeChecked();
-    await expect(page.locator('[value="option-4"]')).not.toBeChecked();
+    await checkboxesPage.expectCheckboxesNotToBeChecked(['option-2', 'option-4']);
   });
 
   test('Selecting radiobuttons', async ({ page }) => {
     const dropdownsCheckboxesRadiobuttons = new DropdownsCheckboxesRadiobuttons(page);
   
-    await page.goto("https://webdriveruniversity.com/Dropdown-Checkboxes-RadioButtons/index.html");
+    await dropdownsCheckboxesRadiobuttons.navigate();
   
     const radioButtons = ['green', 'blue', 'yellow', 'orange', 'purple'];
   
@@ -195,9 +191,12 @@ test('Calendar validations', async ({ page }) => {
     const datePickerPage = new DatePickerPage(page);
     await datePickerPage.navigate();
   
-    const monthNumber = 6;
+    const monthNumber = 6; // 0-indexed month (6 -> July)
     const date = '15';
     const year = '2027';
   
     await datePickerPage.selectDate(year, monthNumber, date);
+
+     // Verify the selected date
+    await datePickerPage.expectSelectedDate(year, monthNumber, date);
   });
